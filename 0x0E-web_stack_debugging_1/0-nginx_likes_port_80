@@ -1,26 +1,5 @@
 #!/usr/bin/env bash
+# configures a server to listening on port 80 of all server
 
-# Check if Nginx is installed
-if ! command -v nginx &> /dev/null; then
-    sudo apt-get update
-    sudo apt-get install -y nginx
-fi
-
-# Path to Nginx configuration
-nginx_config="/etc/nginx/sites-enabled/default"
-
-# Check if the Nginx configuration file exists
-if [ -f "$nginx_config" ]; then
-    # Check if the old string exists in the configuration
-    if grep -q "listen 8080 default_server;" "$nginx_config"; then
-        # Replace the old string with the new string
-        sudo sed -i 's/listen 8080 default_server;/listen 80 default_server;/' "$nginx_config"
-        # Restart Nginx
-        sudo service nginx restart
-        echo "Nginx configuration updated and Nginx service restarted."
-    else
-        echo "Nginx configuration is already up to date."
-    fi
-else
-    echo "Nginx configuration file not found. Please check the path: $nginx_config"
-fi
+sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
+sudo service nginx restart
